@@ -14,13 +14,11 @@ MODULE_DIRS:= dx010 haliburton silverstone seastone2 ds1000 questone2 silverston
 override_dh_auto_build:
 	(for mod in $(MODULE_DIRS); do \
 		make -C $(KERNEL_SRC)/build M=$(MOD_SRC_DIR)/$${mod}/modules; \
-        if [ -d $(MOD_SRC_DIR)/$${mod}/pddf ]; then \
-                cd $(MOD_SRC_DIR)/$${mod}/pddf; \
-        else \
-                cd $(MOD_SRC_DIR)/$${mod}; \
-
+		if [ -d $(MOD_SRC_DIR)/$${mod}/pddf ]; then \
+			cd $(MOD_SRC_DIR)/$${mod}/pddf; \
+		else \
+			cd $(MOD_SRC_DIR)/$${mod}; \
 		fi; \
-
 		python3 setup.py bdist_wheel -d $(MOD_SRC_DIR)/$${mod}/modules; \
 		echo "Finished making sonic_platform whl package for $$mod"; \
 	done)
